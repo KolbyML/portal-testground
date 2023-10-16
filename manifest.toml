@@ -1,0 +1,28 @@
+name = "quickstart"
+[defaults]
+builder = "docker:generic"
+runner = "local:docker"
+
+[builders."docker:generic"]
+enabled = true
+
+[runners."local:docker"]
+enabled = true
+
+[[testcases]]
+name = "example"
+instances = { min = 1, max = 1, default = 1 }
+
+    [testcases.params]
+    greeting = { type = "string", desc = "greeting", default = "Hello" }
+
+[[testcases]]
+name = "publish-subscribe"
+instances = { min = 2, max = 10, default = 2 }
+
+# Add more testcases here...
+# [[testcases]]
+# name = "another"
+# instances = { min = 1, max = 1, default = 1 }
+#   [testcase.params]
+#   param1 = { type = "int", desc = "an integer", unit = "units", default = 3 }

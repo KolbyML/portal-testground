@@ -1,0 +1,16 @@
+[package]
+name = "trin-testground"
+version = "0.1.0"
+edition = "2021"
+authors = ["Kolby ML (Moroz Liebl)"]
+rust-version = "1.71.1"
+repository = "https://github.com/KolbyML/trin-testground"
+license = "MIT"
+readme = "README.md"
+
+[dependencies]
+futures = { version = "0.3", default-features = false, features = [] }
+serde_json = {version = "1.0.89"}
+testground = "0.4.0"
+tokio = { version = "1.14.0", features = ["full"] }
+tokio-stream = { version = "0.1", default-features = false, features = [] }

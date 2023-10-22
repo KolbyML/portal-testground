@@ -2,7 +2,7 @@
 name = "trin-testground"
 version = "0.1.0"
 edition = "2021"
-authors = ["Kolby ML (Moroz Liebl)"]
+authors = ["Kolby ML (Moroz Liebl) <kolbydml@gmail.com>"]
 rust-version = "1.71.1"
 repository = "https://github.com/KolbyML/trin-testground"
 license = "MIT"

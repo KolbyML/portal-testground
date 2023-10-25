@@ -1,4 +1,5 @@
-name = "quickstart"
+name = "trin-testground"
+
 [defaults]
 builder = "docker:generic"
 runner = "local:docker"
@@ -19,6 +20,14 @@ instances = { min = 1, max = 1, default = 1 }
 [[testcases]]
 name = "publish-subscribe"
 instances = { min = 2, max = 10, default = 2 }
+
+[[testcases]]
+name = "ping"
+instances = { min = 2, max = 2, default = 2 }
+
+    [testcases.params]
+    client1 = { type = "string", desc = "name of client i.e. (trin,fluffy,ultralight)", default = "trin" }
+    client2 = { type = "string", desc = "name of client i.e. (trin,fluffy,ultralight)", default = "trin" }
 
 # Add more testcases here...
 # [[testcases]]

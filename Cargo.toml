@@ -9,8 +9,16 @@ license = "MIT"
 readme = "README.md"
 
 [dependencies]
+ethportal-api = { git = "https://github.com/ethereum/trin", rev = "4370fa8999590cde863186763e324b9275a8d9f9" }
+bollard = { version = "0.15.0", features = ["buildkit"] }
 futures = { version = "0.3", default-features = false, features = [] }
+jsonrpsee = {version="0.20.0", features = ["client"]}
 serde_json = {version = "1.0.89"}
 testground = "0.4.0"
 tokio = { version = "1.14.0", features = ["full"] }
 tokio-stream = { version = "0.1", default-features = false, features = [] }
+futures-executor = "0.3.28"
+futures-util = "0.3.28"
+flate2 = "1.0.28"
+tar = "0.4.40"
+rand = { version = "0.8.5", features = [] }

@@ -1,25 +1,23 @@
 FROM rust:1.71-bullseye as builder
-WORKDIR /usr/src/trin-testground
+RUN USER=root cargo new --bin portal-testground
+WORKDIR /portal-testground
 
 # Cache dependencies between test runs,
 # See https://blog.mgattozzi.dev/caching-rust-docker-builds/
 # And https://github.com/rust-lang/cargo/issues/2644
+RUN apt-get update && apt-get install clang -y
+COPY ./plan/Cargo.toml ./Cargo.toml
+COPY ./plan/src ./src
+RUN cargo build --release
 
-RUN mkdir -p ./plan/src/
-RUN echo "fn main() { println!(\"If you see this message, you may want to clean up the target directory or the Docker build cache.\") }" > ./plan/src/main.rs
-COPY ./plan/Cargo.toml ./plan/
-RUN cd ./plan/ && cargo build
-
-COPY . .
-
-# This is in order to make sure `main.rs`s mtime timestamp is updated to avoid the dummy `main`
-# remaining in the release binary.
-# https://github.com/rust-lang/cargo/issues/9598
-RUN touch ./plan/src/main.rs
-
-RUN cd plan && cargo build --bin=trin-testground && mv /usr/src/trin-testground/plan/target/debug/trin-testground /usr/local/bin/trin-testground
-
-FROM debian:bullseye-slim
-COPY --from=builder /usr/local/bin/trin-testground /usr/local/bin/trin-testground
+FROM ubuntu:23.04
+# remove iputils-ping soon
+RUN apt-get update && apt-get install curl jq iputils-ping nodejs musl-dev -y && ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1
+COPY --from=builder /portal-testground/target/release/portal-testground .
+COPY --from=builder /portal-testground/src/clients ./src/clients
+ENV RUST_LOG=debug
+# port for testground
 EXPOSE 6060
-ENTRYPOINT ["trin-testground"]
+# Export ports used by portal nodes to allow outside access to the node
+EXPOSE 8545 9009/udp 9000/udp
+ENTRYPOINT ["./portal-testground"]

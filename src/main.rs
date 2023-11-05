@@ -1,3 +1,4 @@
+#![warn(clippy::panic)]
 mod utils;
 
 use crate::utils::{get_client_names, Client};
@@ -49,12 +50,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
         .await?;
 
-    match client.run_parameters().test_case.as_str() {
+    let test_case_string = client.run_parameters().test_case;
+    match test_case_string.as_str() {
         "example" => example(client).await,
         "publish-subscribe" => publish_subscribe(client).await,
         "ping-two-way" => ping_two_way(client).await,
         "ping-one-way" => ping_one_way(client).await,
-        _ => panic!("Unknown test case: {}", client.run_parameters().test_case),
+        _ => Ok(client
+            .record_failure(format!("Unknown test case: {}", test_case_string))
+            .await?),
     }
 }
 
@@ -149,7 +153,10 @@ async fn ping_two_way(
             let our_enr = match portal_client.rpc.node_info().await {
                 Ok(node_info) => node_info.enr,
                 Err(err) => {
-                    panic!("Error getting node info: {err:?}");
+                    client
+                        .record_failure(format!("Error getting node info: {err:?}"))
+                        .await?;
+                    return Ok(());
                 }
             };
 
@@ -171,7 +178,10 @@ async fn ping_two_way(
                 let target_enr = Enr::from_str(enr.as_str().unwrap()).unwrap();
 
                 if let Err(err) = portal_client.rpc.ping(target_enr).await {
-                    panic!("Unable to receive pong node 0 info: {err:?}");
+                    client
+                        .record_failure(format!("Unable to receive pong node 0 info: {err:?}"))
+                        .await?;
+                    return Ok(());
                 }
             } else {
                 client
@@ -212,7 +222,10 @@ async fn ping_two_way(
             let our_enr = match portal_client.rpc.node_info().await {
                 Ok(node_info) => node_info.enr,
                 Err(err) => {
-                    panic!("Error getting node info: {err:?}");
+                    client
+                        .record_failure(format!("Error getting node info: {err:?}"))
+                        .await?;
+                    return Ok(());
                 }
             };
 
@@ -231,7 +244,10 @@ async fn ping_two_way(
                 let target_enr = Enr::from_str(enr.as_str().unwrap()).unwrap();
 
                 if let Err(err) = portal_client.rpc.ping(target_enr).await {
-                    panic!("Unable to receive pong node 1 info: {err:?}");
+                    client
+                        .record_failure(format!("Unable to receive pong node 1 info: {err:?}"))
+                        .await?;
+                    return Ok(());
                 }
             } else {
                 client
@@ -293,7 +309,10 @@ async fn ping_one_way(
                 let target_enr = Enr::from_str(enr.as_str().unwrap()).unwrap();
 
                 if let Err(err) = portal_client.rpc.ping(target_enr).await {
-                    panic!("Unable to receive pong node 0 info: {err:?}");
+                    client
+                        .record_failure(format!("Unable to receive pong node 0 info: {err:?}"))
+                        .await?;
+                    return Ok(());
                 }
             } else {
                 client
@@ -334,7 +353,10 @@ async fn ping_one_way(
             let our_enr = match portal_client.rpc.node_info().await {
                 Ok(node_info) => node_info.enr,
                 Err(err) => {
-                    panic!("Error getting node info: {err:?}");
+                    client
+                        .record_failure(format!("Error getting node info: {err:?}"))
+                        .await?;
+                    return Ok(());
                 }
             };
             let json = serde_json::json!({"enr2": our_enr.to_base64()});

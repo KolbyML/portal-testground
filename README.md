@@ -10,7 +10,7 @@ Terminal 2
 ```bash
 git clone https://github.com/KolbyML/portal-testground.git
 testground plan import --from ./portal-testground
-testground run single --plan=portal-testground --testcase=publish-subscribe --runner=local:docker --builder=docker:generic --instances=2 --wait
+testground run single --plan=portal-testground --testcase=ping-one-way --runner=local:docker --builder=docker:generic --instances=2 --wait
 ```
 
 ### How to set client for test

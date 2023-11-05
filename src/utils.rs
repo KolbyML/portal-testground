@@ -118,11 +118,6 @@ impl Client {
     }
 
     pub async fn start_client_local(client_type: String, ip: String) -> Client {
-        Command::new(CLIENTS_DIRECTOR.to_string() + "getdocker.sh")
-            .env(CLIENT_TYPE, client_type.clone())
-            .output()
-            .await
-            .expect("Failed to execute command");
         Command::new(
             CLIENTS_DIRECTOR.to_string()
                 + &client_type.clone()

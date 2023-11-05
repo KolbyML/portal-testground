@@ -30,7 +30,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .or(Some(&"0".to_string()))
                     .expect("REASON")
                     .parse::<u64>()?
-                    * 1_000_000, // Translate from millisecond to nanosecond
+                    * 1_000_000,
                 jitter: 0,
                 bandwidth: 1048576, // 1Mib
                 filter: FilterAction::Accept,
@@ -145,7 +145,7 @@ async fn ping_two_way(
             let ip = run_parameters
                 .data_network_ip()?
                 .expect("IP address for the data network");
-            let portal_client = Client::start_client_local(client_type, ip.to_string()).await;
+            let portal_client = Client::start_client(client_type, ip.to_string()).await;
             let our_enr = match portal_client.rpc.node_info().await {
                 Ok(node_info) => node_info.enr,
                 Err(err) => {
@@ -208,7 +208,7 @@ async fn ping_two_way(
             let ip = run_parameters
                 .data_network_ip()?
                 .expect("IP address for the data network");
-            let portal_client = Client::start_client_local(client_type, ip.to_string()).await;
+            let portal_client = Client::start_client(client_type, ip.to_string()).await;
             let our_enr = match portal_client.rpc.node_info().await {
                 Ok(node_info) => node_info.enr,
                 Err(err) => {
@@ -277,7 +277,7 @@ async fn ping_one_way(
             let ip = run_parameters
                 .data_network_ip()?
                 .expect("IP address for the data network");
-            let portal_client = Client::start_client_local(client_type, ip.to_string()).await;
+            let portal_client = Client::start_client(client_type, ip.to_string()).await;
             let payload = client
                 .subscribe("send-to-node-1", u16::MAX.into())
                 .await
@@ -330,7 +330,7 @@ async fn ping_one_way(
             let ip = run_parameters
                 .data_network_ip()?
                 .expect("IP address for the data network");
-            let portal_client = Client::start_client_local(client_type, ip.to_string()).await;
+            let portal_client = Client::start_client(client_type, ip.to_string()).await;
             let our_enr = match portal_client.rpc.node_info().await {
                 Ok(node_info) => node_info.enr,
                 Err(err) => {

@@ -1,5 +1,5 @@
-.git
-.env
-venv
-target
-Cargo.lock
+**/.git
+**/.env
+**/venv
+**/target
+**/Cargo.lock

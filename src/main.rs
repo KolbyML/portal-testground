@@ -28,6 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     .test_instance_params
                     .get("latency")
                     .or(Some(&"0".to_string()))
+                    .expect("REASON")
                     .parse::<u64>()?
                     * 1_000_000, // Translate from millisecond to nanosecond
                 jitter: 0,

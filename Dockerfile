@@ -15,6 +15,7 @@ FROM ubuntu:23.04
 RUN apt-get update && apt-get install curl jq iputils-ping nodejs musl-dev -y && ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1
 COPY --from=builder /portal-testground/target/release/portal-testground .
 COPY --from=builder /portal-testground/src/clients ./src/clients
+RUN cd /src/clients/ && ./installallclients.sh
 ENV RUST_LOG=debug
 # port for testground
 EXPOSE 6060

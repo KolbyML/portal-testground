@@ -22,12 +22,22 @@ name = "publish-subscribe"
 instances = { min = 2, max = 10, default = 2 }
 
 [[testcases]]
-name = "ping"
+name = "ping-two-way"
 instances = { min = 2, max = 2, default = 2 }
 
     [testcases.params]
+    latency = { type = "int", desc = "Latency between peers.", unit = "ms", default = 100 }
     client1 = { type = "string", desc = "name of client i.e. (trin,fluffy,ultralight)", default = "fluffy" }
     client2 = { type = "string", desc = "name of client i.e. (trin,fluffy,ultralight)", default = "ultralight" }
+
+[[testcases]]
+name = "ping-one-way"
+instances = { min = 2, max = 2, default = 2 }
+
+    [testcases.params]
+    latency = { type = "int", desc = "Latency between peers.", unit = "ms", default = 100 }
+    client1 = { type = "string", desc = "name of client i.e. (trin,fluffy,ultralight)", default = "trin" }
+    client2 = { type = "string", desc = "name of client i.e. (trin,fluffy,ultralight)", default = "fluffy" }
 
 # Add more testcases here...
 # [[testcases]]
